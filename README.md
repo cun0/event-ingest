@@ -4,7 +4,7 @@ A minimal, deterministic event ingestion service focused on correctness, idempot
 
 ## Architecture Overview
 
-<img width="991" height="703" alt="Screenshot 2025-12-29 at 02 01 18" src="https://github.com/user-attachments/assets/0690b207-c60f-44c0-9d66-97b5effc8dd5" />
+<img width="991" height="703" alt="Screenshot 2025-12-29 at 02 01 18" src="https://github.com/user-attachments/assets/dd590142-fef5-46f6-9aaa-f3007807c78a" />
 
 
 
