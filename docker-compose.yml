@@ -1,0 +1,41 @@
+# docker-compose.yml
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: insider
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: insider
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U insider -d insider"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: "8080"
+      DATABASE_URL: "postgres://insider:pass@db:5432/insider?sslmode=disable"
+      LOG_LEVEL: "INFO"
+
+      REQUEST_TIMEOUT: "3s"
+      BATCH_WINDOW: "2ms"
+      MAX_BATCH: "800"
+      QUEUE_SIZE: "50000"
+
+      DB_CONNECT_TIMEOUT: "5s"
+      DB_MAX_CONNS: "25"
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
